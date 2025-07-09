@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <article>
+        <header class="mb-4">
+            <h1 class="fw-bolder mb-1">{{ article.title }}</h1>
+            <div class="text-muted fst-italic mb-2">
+                Published {{ article.created_at|date:"d.m.Y H:i" }} by {{ article.author.username }}
+            </div>
+            {% if article.author == request.user %}
+            <div class="mt-2">
+                <a href="{% url 'article-update' article.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <a href="{% url 'article-delete' article.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </div>
+            {% endif %}
+        </header>
+
+        <section class="mb-5">
+            <p class="fs-5 mb-4">{{ article.content|linebreaks }}</p>
+        </section>
+
+        {% if article.images.all %}
+        <section class="mb-5">
+            <h3>Gallery</h3>
+            <div class="row">
+                {% for image in article.images.all %}
+                <div class="col-md-4 mb-3">
+                    <img src="{{ image.image.url }}" class="img-fluid rounded" alt="Article image">
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </article>
+</div>
+{% endblock %}
