@@ -4,10 +4,10 @@ from blog.models import Article
 
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.attrs.update({'multiple': 'multiple'})
+        self.attrs.update({"multiple": "multiple"})
 
 
 class MultipleFileField(forms.FileField):
