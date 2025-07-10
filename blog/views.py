@@ -90,9 +90,7 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
 
-    def delete(self, request, *args, **kwargs):
-        messages.success(request, "Article deleted successfully!")
-        return super().delete(request, *args, **kwargs)
+
 
     def form_valid(self, form):
         response = super().form_valid(form)

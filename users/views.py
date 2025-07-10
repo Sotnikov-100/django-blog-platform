@@ -29,14 +29,13 @@ class RegisterView(CreateView):
     success_url = reverse_lazy("profile")
 
     def form_valid(self, form):
-        response = super().form_valid(form)
         user = form.save()
         login(self.request, user)
         messages.success(
             self.request,
             f"Welcome, {user.first_name}! Your account has been created successfully.",
         )
-        return response
+        return super().form_valid(form)
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
