@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалити статтю{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Підтвердження видалення</h1>
+
+            <div class="card border-danger mb-4">
+                <div class="card-header bg-danger text-white">
+                    Увага!
+                </div>
+                <div class="card-body">
+                    <p>Ви дійсно хочете видалити статтю <strong>"{{ object.title }}"</strong>?</p>
+                    <p class="text-muted">Цю дію неможливо скасувати.</p>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Так, видалити</button>
+                        <a href="{% url 'article-detail' object.pk %}" class="btn btn-secondary">Скасувати</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

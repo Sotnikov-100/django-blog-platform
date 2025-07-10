@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">User Profile</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Basic Information</h5>
+                            <p><strong>First Name:</strong> {{ user.first_name|default:"Not specified" }}</p>
+                            <p><strong>Username:</strong> {{ user.username }}</p>
+                            <p><strong>Registration Date:</strong> {{ user.date_joined|date:"d.m.Y H:i" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Biography</h5>
+                            <p>{{ user.bio|default:"Biography not specified"|linebreaks }}</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>My Articles</h5>
+                            {% if user.articles.all %}
+                                <div class="list-group">
+                                    {% for article in user.articles.all|slice:":5" %}
+                                    <a href="{% url 'article-detail' article.pk %}" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">{{ article.title }}</h6>
+                                            <small>{{ article.created_at|date:"d.m.Y" }}</small>
+                                        </div>
+                                        <p class="mb-1">{{ article.content|truncatewords:20 }}</p>
+                                    </a>
+                                    {% endfor %}
+                                </div>
+                                {% if user.articles.count > 5 %}
+                                <p class="text-muted mt-2">Showing 5 of {{ user.articles.count }} articles</p>
+                                {% endif %}
+                            {% else %}
+                                <p class="text-muted">You don't have any articles yet. <a href="{% url 'article-create' %}">Create your first article</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+                        <a href="{% url 'article-create' %}" class="btn btn-primary">Create Article</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

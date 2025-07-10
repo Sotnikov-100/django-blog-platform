@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Blog Platform{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 mb-4">Welcome to Our Blog Platform</h1>
+            <p class="lead mb-5">
+                Discover amazing articles, share your thoughts, and connect with other writers.
+                Join our community to create and share your own stories!
+            </p>
+            
+            {% if user.is_authenticated %}
+                <div class="mb-4">
+                    <a href="{% url 'article-create' %}" class="btn btn-primary btn-lg me-3">
+                        <i class="bi bi-plus-circle"></i> Create New Article
+                    </a>
+                    <a href="{% url 'article-list' %}" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-list"></i> View All Articles
+                    </a>
+                </div>
+            {% else %}
+                <div class="mb-4">
+                    <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg me-3">
+                        <i class="bi bi-person-plus"></i> Register
+                    </a>
+                    <a href="{% url 'article-list' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="bi bi-list"></i> Browse Articles
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if recent_articles %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="mb-4">Recent Articles</h2>
+        </div>
+        {% for article in recent_articles %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if article.images.first %}
+                <img src="{{ article.images.first.image.url }}" class="card-img-top" alt="{{ article.title }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <i class="bi bi-person"></i> {{ article.author.first_name|default:article.author.username }}
+                        </small>
+                        <small class="text-muted">
+                            <i class="bi bi-calendar"></i> {{ article.created_at|date:"M d, Y" }}
+                        </small>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'article-detail' article.pk %}" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 
